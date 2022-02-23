@@ -1,0 +1,17 @@
+.pool-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 30px;
+
+  &-title {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    margin-bottom: 30px;
+  }
+}

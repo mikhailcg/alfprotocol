@@ -1,0 +1,46 @@
+.stake {
+  background-color: white;
+  padding: 30px;
+  border-radius: 5px;
+
+  h3 {
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  label {
+    margin-top: 32px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    input {
+      margin-left: 16px;
+    }
+  }
+
+  button {
+    padding: 6px 32px;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+    &:not(:disabled) {
+      background-color: #661c59;
+      color: #F8ECFE;
+    }
+    &:disabled {
+      pointer-events: none;
+    }
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    cursor: pointer;
+    margin-top: 32px;
+    display: block;
+    width: 100%;
+  }
+}

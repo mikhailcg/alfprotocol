@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import './walletInfo.scss';
-import { convertLamports } from '../../../utils/formatter';
+import { convertFromLamports } from '../../../utils/formatter';
+import { disconnectWallet } from '../../../actions/wallet';
 
 interface Props {
   publicKey: PublicKey;
@@ -20,6 +21,7 @@ const WalletInfo: React.FC<Props> = (props: Props) => {
 
   const handleDisconnect = useCallback(async () => {
     await disconnect();
+    disconnectWallet();
   }, [disconnect]);
 
   return (
@@ -36,7 +38,7 @@ const WalletInfo: React.FC<Props> = (props: Props) => {
           </tr>
           <tr>
             <th scope="row">Balance</th>
-            <td>{convertLamports(balance)}</td>
+            <td>{convertFromLamports(balance)}</td>
           </tr>
         </tbody>
       </table>

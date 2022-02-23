@@ -7,27 +7,20 @@ import { Modal } from '../common';
 import WalletInfo from './walletInfo';
 import logo from '../../assets/images/logo.svg';
 import './header.scss';
+import { getWalletInfo } from '../../actions/wallet';
+import { useAppSelector } from '../../hooks';
 
 const Header = () => {
   const { publicKey, wallets, select } = useWallet();
   const { connection } = useConnection();
   const address = useMemo(() => publicKey?.toBase58(), [publicKey]);
   const [showWalletInfo, setShowWalletInfo] = useState<boolean>(false);
-  const [balance, setBalance] = useState<number>(0);
-
-  const getAccountInfo = async () => {
-    if (publicKey) {
-      const info = await connection.getAccountInfo(publicKey);
-      if (info) {
-        setBalance(info.lamports);
-      }
-    }
-  };
+  const walletStore = useAppSelector((state) => state.wallet);
 
   useEffect(() => {
     if (publicKey && connection) {
       setShowWalletInfo(false);
-      getAccountInfo();
+      getWalletInfo(publicKey, connection);
     }
   }, [publicKey, connection]);
 
@@ -54,10 +47,10 @@ const Header = () => {
             Connect wallet
           </button>
         )}
-      {showWalletInfo && publicKey
+      {showWalletInfo && publicKey && walletStore.data
         ? (
           <Modal onClose={() => setShowWalletInfo(false)}>
-            <WalletInfo publicKey={publicKey} balance={balance} />
+            <WalletInfo publicKey={publicKey} balance={walletStore.data.lamports} />
           </Modal>
         )
         : null}
