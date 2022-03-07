@@ -1,49 +1,50 @@
 import React, { useState } from 'react';
 import { AccountInfo } from '@solana/web3.js';
-import { Pool as PoolInterface } from '../../../interfaces/pools';
-import { Stake as StakeInterface } from '../../../interfaces/stake';
-import { convertFromLamports } from '../../../utils/formatter';
-import './pool.scss';
+import { Pool as PoolInterface, Staker } from '../../../sdk';
+import { convertFromLamports, getSumByKey } from '../../../utils/formatter';
 import { Modal } from '../../common';
 import Stake from '../stake';
-import { returnStake } from '../../../actions/stake';
+import { claimFromPool } from '../../../actions/pools';
+import './pool.scss';
 
 interface Props {
   pool: PoolInterface;
   wallet: AccountInfo<Buffer> | null;
   address: string | undefined;
-  stake: StakeInterface | undefined;
 }
 
 const Pool: React.FC<Props> = (props: Props) => {
   const {
-    pool, wallet, address, stake,
+    pool, wallet, address,
   } = props;
   const [openStake, setOpenStake] = useState<boolean>(false);
+
+  const accountStakes = address ? pool.stakers.filter((s: Staker) => s.publicKey === address) : [];
+  const totalStakedAmount = getSumByKey(accountStakes, 'stackedAmount');
 
   return (
     <div className="pool">
       <p>
         Pool size
-        <span>{convertFromLamports(pool.totalAmount)}</span>
+        <span>{convertFromLamports(pool.poolInfo.totalAmount)}</span>
       </p>
       <p>
         Reward per tick
-        <span>{convertFromLamports(pool.rewardPerTick)}</span>
+        <span>{convertFromLamports(pool.poolInfo.rewardPerTick)}</span>
       </p>
       <p>
-        {stake ? (
+        {accountStakes.length ? (
           <>
             Staked
-            <span>{convertFromLamports(stake.amount)}</span>
+            <span>{convertFromLamports(totalStakedAmount)}</span>
           </>
         ) : null}
       </p>
       {address ? (
         <div className="pool-actions">
           <div className="pool-actions">
-            {stake ? (
-              <button type="button" onClick={() => returnStake(stake)}>
+            {accountStakes.length ? (
+              <button type="button" onClick={() => claimFromPool(pool, accountStakes[0])}>
                 Return your stake
               </button>
             ) : (

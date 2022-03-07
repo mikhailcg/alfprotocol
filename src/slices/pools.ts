@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Pool } from '../interfaces/pools';
+import { Pool } from '../sdk';
 import { LoadingType, LoadingStateType } from '../types/global';
 
 interface PoolsStateInterface {
@@ -27,23 +27,19 @@ const poolsSlice = createSlice({
       }
       state.data = action.payload;
     },
-    stake(state: PoolsStateInterface, action: PayloadAction<{ address: string, amount: number }>) {
-      state.data = state.data.map((p: Pool) => (
-        p.tokenMint === action.payload.address ? { ...p, totalAmount: p.totalAmount + action.payload.amount } : p
-      ));
-    },
-    add(state: PoolsStateInterface, action: PayloadAction<Pool>) {
+    create(state: PoolsStateInterface, action: PayloadAction<Pool>) {
       state.data = [action.payload, ...state.data];
     },
-    retStake(state: PoolsStateInterface, action: PayloadAction<{ address: string, amount: number }>) {
-      state.data = state.data.map((p: Pool) => (
-        p.tokenMint === action.payload.address ? { ...p, totalAmount: p.totalAmount - action.payload.amount } : p
-      ));
+    stake(state: PoolsStateInterface, action: PayloadAction<Pool>) {
+      state.data = state.data.map((p) => (p.publicKey === action.payload.publicKey ? action.payload : p));
+    },
+    claim(state: PoolsStateInterface, action: PayloadAction<Pool>) {
+      state.data = state.data.map((p) => (p.publicKey === action.payload.publicKey ? action.payload : p));
     },
   },
 });
 
 export const {
-  loading, success, stake, retStake, add,
+  loading, success, create, stake, claim,
 } = poolsSlice.actions;
 export default poolsSlice.reducer;

@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { createPool } from '../../../actions/pools';
-import { INPUT_AMOUNT_PATTERN, MIN_POOL_REWARD, MIN_POOL_SIZE } from '../../../constants';
+import {
+  INPUT_AMOUNT_PATTERN, MAX_AMOUNT_OF_STAKERS, MIN_POOL_REWARD, MIN_POOL_SIZE,
+} from '../../../constants';
+import { mockedPoolAddress } from '../../../sdk/mock';
 import { convertToLamports } from '../../../utils/formatter';
-// import { convertFromLamports } from '../../../utils/formatter';
 import { Modal } from '../../common';
 import './newPool.scss';
 
@@ -30,7 +32,12 @@ const NewPool: React.FC = () => {
 
   const handleCreate = () => {
     if (totalAmount && rewardPerTick && valid) {
-      createPool(convertToLamports(totalAmount), convertToLamports(rewardPerTick));
+      createPool({
+        totalAmount: convertToLamports(totalAmount),
+        tokenMint: mockedPoolAddress(),
+        rewardPerTick: convertToLamports(rewardPerTick),
+        maxAmountOfStakers: MAX_AMOUNT_OF_STAKERS,
+      });
     }
     dropState();
   };

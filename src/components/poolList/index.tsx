@@ -4,10 +4,10 @@ import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { createTransferInstruction, getOrCreateAssociatedTokenAccount } from '../../sdk';
+import { createTransferInstruction, getOrCreateAssociatedTokenAccount } from '../../walletWrappers';
 import './poolList.scss';
-import { Pool as PoolInterface } from '../../interfaces/pools';
-import { Stake } from '../../interfaces/stake';
+import { Pool as PoolInterface } from '../../sdk';
+// import { Stake } from '../../interfaces/stake';
 import { getPools } from '../../actions/pools';
 import { useAppSelector } from '../../hooks';
 import { LoadingType } from '../../types/global';
@@ -19,7 +19,6 @@ const PoolList = () => {
   const { publicKey, signTransaction, sendTransaction } = useWallet();
 
   const poolsStore = useAppSelector((state) => state.pools);
-  const stakeStore = useAppSelector((state) => state.stake);
   const walletStore = useAppSelector((state) => state.wallet);
   const address = useMemo(() => publicKey?.toBase58(), [publicKey]);
 
@@ -89,20 +88,16 @@ const PoolList = () => {
               <NewPool />
             ) : null}
           </div>
-          {poolsStore.data.map((p: PoolInterface) => {
-            const stakesForPool = stakeStore.data.find((s: Stake) => (
-              s.poolAddress === p.tokenMint && address === s.walletAddress
-            ));
-            return (
+          {poolsStore.data.map((p: PoolInterface) => (
+            (
               <Pool
                 pool={p}
-                key={p.tokenMint}
+                key={p.publicKey}
                 wallet={walletStore.data}
                 address={address}
-                stake={stakesForPool}
               />
-            );
-          })}
+            )
+          ))}
         </>
       )}
     </div>

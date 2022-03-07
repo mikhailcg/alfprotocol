@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
-import './walletInfo.scss';
 import { convertFromLamports } from '../../../utils/formatter';
 import { disconnectWallet } from '../../../actions/wallet';
+import './walletInfo.scss';
 
 interface Props {
   publicKey: PublicKey;

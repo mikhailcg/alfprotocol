@@ -4,7 +4,6 @@ import {
   loading, success, failed, disconnect,
 } from '../slices/wallet';
 
-// eslint-disable-next-line import/prefer-default-export
 export const getWalletInfo = async (publicKey: PublicKey, connection: Connection) => {
   store.dispatch(loading());
   const info = await connection.getAccountInfo(publicKey);

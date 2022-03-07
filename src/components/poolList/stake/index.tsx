@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { AccountInfo } from '@solana/web3.js';
-import { Pool as PoolInterface } from '../../../interfaces/pools';
+import { Pool as PoolInterface } from '../../../sdk';
 import { convertFromLamports, convertToLamports } from '../../../utils/formatter';
-import './stake.scss';
-import { addStake } from '../../../actions/stake';
+import { stakeToPool } from '../../../actions/pools';
 import { INPUT_AMOUNT_PATTERN } from '../../../constants';
+import './stake.scss';
 
 interface Props {
   wallet: AccountInfo<Buffer>;
@@ -29,16 +29,12 @@ const Stake: React.FC<Props> = (props: Props) => {
 
   const handleStake = async () => {
     if (valid() && amount) {
-      // eslint-disable-next-line no-console
-      console.log(`You stake ${convertToLamports(amount)} to stake pool ${pool.tokenMint}`);
-
-      await addStake({
-        createdAt: new Date(),
-        amount: convertToLamports(amount),
-        walletAddress: address,
-        poolAddress: pool.tokenMint,
-      });
-      callback();
+      stakeToPool(pool, {
+        publicKey: address,
+        farmAccumulatedBefore: pool.poolInfo.totalAmount,
+        stackedTimestamp: new Date().getTime(),
+        stackedAmount: convertToLamports(amount),
+      }).then(() => callback());
     }
   };
 
