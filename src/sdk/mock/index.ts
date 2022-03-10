@@ -3,9 +3,9 @@ import { Pool } from '../index';
 
 export const mockedPoolList: Pool[] = [
   {
-    publicKey: 'cdsjkdfskjfdsjkfkdjskjfdsfsdkjjkdfs',
+    publicKey: '6eZYJC7XH4WPSyh4xCgcchs7dowscfZtK4aYMt93cS78',
     poolInfo: {
-      tokenMint: 'cdsjkdfskjfdsjkfkdjskjfdsfsdkjjkdfs',
+      tokenMint: 'BjAf4jo3wyurWWYhxrpez6XMYi5UTZ1psuzosEWz7B8j',
       totalAmount: 19999999999,
       rewardPerTick: 154234200,
       maxAmountOfStakers: MAX_AMOUNT_OF_STAKERS,

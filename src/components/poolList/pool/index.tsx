@@ -58,7 +58,7 @@ const Pool: React.FC<Props> = (props: Props) => {
       {openStake && address && wallet && address
         ? (
           <Modal onClose={() => setOpenStake(false)}>
-            <Stake address={address} pool={pool} wallet={wallet} callback={() => setOpenStake(false)} />
+            <Stake pool={pool} wallet={wallet} callback={() => setOpenStake(false)} />
           </Modal>
         )
         : null}
