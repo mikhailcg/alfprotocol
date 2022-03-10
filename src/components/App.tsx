@@ -7,7 +7,7 @@ import Header from './header';
 import PoolList from './poolList';
 
 const App: React.FC = () => {
-  const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Testnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);

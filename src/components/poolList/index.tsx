@@ -2,9 +2,9 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { createTransferInstruction, getOrCreateAssociatedTokenAccount } from '../../walletWrappers';
+import { PublicKey, Transaction } from '@solana/web3.js';
+import { createTransferInstruction, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { getOrCreateAssociatedTokenAccount } from '../../walletWrappers';
 import './poolList.scss';
 import { Pool as PoolInterface } from '../../sdk';
 // import { Stake } from '../../interfaces/stake';
@@ -13,6 +13,7 @@ import { useAppSelector } from '../../hooks';
 import { LoadingType } from '../../types/global';
 import Pool from './pool';
 import NewPool from './newPool';
+import { convertToLamports } from '../../utils/formatter';
 
 const PoolList = () => {
   const { connection } = useConnection();
@@ -30,7 +31,7 @@ const PoolList = () => {
       try {
         if (!publicKey || !signTransaction) throw new WalletNotConnectedError();
         const toPublicKey = new PublicKey(toPubkey);
-        const mint = new PublicKey('Az9aJhfHg3WmrWdwXmTfqoDJRbuiFr8JpRKJrtF7LH7W');
+        const mint = new PublicKey('TODO');
 
         const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
           connection,
@@ -50,16 +51,16 @@ const PoolList = () => {
 
         const transaction = new Transaction().add(
           createTransferInstruction(
-            fromTokenAccount.address, // source
-            toTokenAccount.address, // dest
+            fromTokenAccount.address,
+            toTokenAccount.address,
             publicKey,
-            amount * LAMPORTS_PER_SOL,
+            convertToLamports(amount),
             [],
             TOKEN_PROGRAM_ID,
           ),
         );
 
-        const blockHash = await connection.getRecentBlockhash();
+        const blockHash = await connection.getLatestBlockhash();
         transaction.feePayer = await publicKey;
         transaction.recentBlockhash = await blockHash.blockhash;
         const signed = await signTransaction(transaction);
@@ -68,7 +69,7 @@ const PoolList = () => {
 
         console.log('Transaction sent');
       } catch (error: any) {
-        console.log(`Transaction failed: ${error.message}`);
+        console.log(`Transaction failed: ${error}`);
       }
     },
     [publicKey, sendTransaction, connection],

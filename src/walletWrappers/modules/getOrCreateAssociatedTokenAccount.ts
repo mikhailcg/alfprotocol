@@ -6,7 +6,7 @@ import {
 } from '@solana/web3.js';
 import { createAssociatedTokenAccountInstruction } from './createAssociatedTokenAccountInstruction';
 import { getAccountInfo } from './getAccountInfo';
-import { getAssociatedTokenAddress } from './getAssociatedTokerAddress';
+import { getAssociatedTokenAddress } from './getAssociatedTokenAddress';
 
 export async function getOrCreateAssociatedTokenAccount(
   connection: Connection,
@@ -71,8 +71,8 @@ export async function getOrCreateAssociatedTokenAccount(
     }
   }
 
-  if (!account.mint.equals(mint.toBuffer())) throw Error('TokenInvalidMintError');
-  if (!account.owner.equals(owner.toBuffer())) throw new Error('TokenInvalidOwnerError');
+  if (account.mint.toBase58() !== mint.toBase58()) throw Error('TokenInvalidMintError');
+  if (account.owner.toBase58() !== owner.toBase58()) throw new Error('TokenInvalidOwnerError');
 
   return account;
 }
