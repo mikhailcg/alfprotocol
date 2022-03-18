@@ -38,7 +38,7 @@ const WalletInfo: React.FC<Props> = (props: Props) => {
           </tr>
           <tr>
             <th scope="row">Balance</th>
-            <td>{convertFromLamports(balance)}</td>
+            <td>{`${convertFromLamports(balance)} SOL`}</td>
           </tr>
         </tbody>
       </table>

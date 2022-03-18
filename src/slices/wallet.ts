@@ -40,20 +40,10 @@ const walletSlice = createSlice({
     disconnect(state: WalletStateInterface) {
       state.data = null;
     },
-    decreaseBalance(state: WalletStateInterface, action: PayloadAction<number>) {
-      if (state.data) {
-        state.data.lamports -= action.payload;
-      }
-    },
-    increaseBalance(state: WalletStateInterface, action: PayloadAction<number>) {
-      if (state.data) {
-        state.data.lamports += action.payload;
-      }
-    },
   },
 });
 
 export const {
-  loading, success, failed, disconnect, decreaseBalance, increaseBalance,
+  loading, success, failed, disconnect,
 } = walletSlice.actions;
 export default walletSlice.reducer;

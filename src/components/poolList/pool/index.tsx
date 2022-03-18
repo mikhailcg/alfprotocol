@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { AccountInfo } from '@solana/web3.js';
 import { Pool as PoolInterface, Staker } from '../../../sdk';
 import { convertFromLamports, getSumByKey } from '../../../utils/formatter';
 import { Modal } from '../../common';
 import Stake from '../stake';
 import { claimFromPool } from '../../../actions/pools';
 import './pool.scss';
+import { TokenAccount } from '../../../slices/tokenAccounts';
 
 interface Props {
   pool: PoolInterface;
-  wallet: AccountInfo<Buffer> | null;
+  tokenAccounts: TokenAccount[] | null;
   address: string | undefined;
 }
 
 const Pool: React.FC<Props> = (props: Props) => {
   const {
-    pool, wallet, address,
+    pool, tokenAccounts, address,
   } = props;
   const [openStake, setOpenStake] = useState<boolean>(false);
 
@@ -55,10 +55,14 @@ const Pool: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       ) : null}
-      {openStake && address && wallet && address
+      {openStake && address && address
         ? (
           <Modal onClose={() => setOpenStake(false)}>
-            <Stake pool={pool} wallet={wallet} callback={() => setOpenStake(false)} />
+            <Stake
+              tokenAccounts={tokenAccounts || []}
+              pool={pool}
+              callback={() => setOpenStake(false)}
+            />
           </Modal>
         )
         : null}

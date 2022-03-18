@@ -2,7 +2,6 @@ import { store } from '../utils/store';
 import {
   loading, success, create, stake, claim,
 } from '../slices/pools';
-import { decreaseBalance, increaseBalance } from '../slices/wallet';
 import {
   SPLStakingSDK, PoolInfo, Pool, Staker,
 } from '../sdk';
@@ -41,7 +40,6 @@ export const stakeToPool = (pool: Pool, staker: Staker) => (
     try {
       SPLStakingSDK.stake(pool, staker).then((p) => {
         store.dispatch(stake(p));
-        store.dispatch(decreaseBalance(Number(staker.stackedAmount)));
         resolve(pool);
       });
     } catch (error: any) {
@@ -56,7 +54,6 @@ export const claimFromPool = (pool: Pool, staker: Staker) => (
     try {
       SPLStakingSDK.claim(pool, staker).then((p) => {
         store.dispatch(claim(p));
-        store.dispatch(increaseBalance(Number(staker.stackedAmount)));
         resolve(pool);
       });
     } catch (error: any) {

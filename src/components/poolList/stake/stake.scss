@@ -13,13 +13,25 @@
   }
 
   label {
-    margin-top: 32px;
+    margin: 32px auto;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
     input {
       margin-left: 16px;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style-position: inside;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -39,7 +51,7 @@
     font-size: 16px;
     line-height: 20px;
     cursor: pointer;
-    margin-top: 32px;
+    margin-top: 8px;
     display: block;
     width: 100%;
   }

@@ -12,7 +12,7 @@ const PoolList = () => {
   const { publicKey } = useWallet();
 
   const poolsStore = useAppSelector((state) => state.pools);
-  const walletStore = useAppSelector((state) => state.wallet);
+  const tokenAccountsStore = useAppSelector((state) => state.tokenAccounts);
   const address = useMemo(() => publicKey?.toBase58(), [publicKey]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const PoolList = () => {
               <Pool
                 pool={p}
                 key={p.publicKey}
-                wallet={walletStore.data}
+                tokenAccounts={tokenAccountsStore.data}
                 address={address}
               />
             )
