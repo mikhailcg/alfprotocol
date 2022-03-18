@@ -10,8 +10,8 @@ export const getWalletInfo = async (publicKey: PublicKey, connection: Connection
   if (info) {
     store.dispatch(success(info));
   } else {
-    console.error('Cannot get account information');
-    store.dispatch(failed('Cannot get account information'));
+    console.error('Cannot get wallet information');
+    store.dispatch(failed('Cannot get wallet information'));
   }
 };
 

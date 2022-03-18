@@ -3,11 +3,13 @@ import React, {
 } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletName, WalletReadyState } from '@solana/wallet-adapter-base';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Modal } from '../common';
 import WalletInfo from './walletInfo';
 import logo from '../../assets/images/logo.svg';
 import './header.scss';
 import { getWalletInfo } from '../../actions/wallet';
+import { getTokenAccountInfo } from '../../actions/tokenAccounts';
 import { useAppSelector } from '../../hooks';
 
 const Header = () => {
@@ -21,6 +23,7 @@ const Header = () => {
     if (publicKey && connection) {
       setShowWalletInfo(false);
       getWalletInfo(publicKey, connection);
+      getTokenAccountInfo(publicKey, connection, TOKEN_PROGRAM_ID);
     }
   }, [publicKey, connection]);
 
